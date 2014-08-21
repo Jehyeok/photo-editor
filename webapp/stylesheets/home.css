@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+
+#bodyWrapper {
+	width: 100%;
+	height: 800px;
+}
+
+#contentWrapper {
+	width: 1000px;
+	height: 100%;
+	display: inline-block;
+	border-style: solid;
+	border-radius: 20px;
+	border-color: #E2E2DB;
+	float: left;
+}
+
+#contentWrapper #contentCanvas{
+	width: 100%;
+	height: 100%;
+}
+
+#rightSidebarWrapper {
+	width: 200px;
+	height: 100%;
+	display: inline-block;
+	border-style: solid;
+	border-radius: 20px;
+	border-color: #E2E2DB;
+	float: right;
+}
+
+#rightSidebarWrapper .imageBox {
+	width: 180px;
+	height: 180px;
+	border-radius: 20px;
+	margin: 10px auto 0;
+	background-size: cover;
+	background-image: url(../images/plus.png);
+}
+
+#fileUploadDiv {
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	margin: 10px auto 0;
+	background-image: url(../images/plus.png);
+	background-size: cover;
+}
+
+#fileUploadDiv input[type="file"] {
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+}

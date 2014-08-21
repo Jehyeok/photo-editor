@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- controller 에 해당하는 놈들을 로드. 컨트롤러 식별은 어노테이션으로. -->
+	<context:component-scan base-package="com.jehyeok.web" />
+
+	<!-- controller 설정을 annotation 으로 하겠음. -->
+	<mvc:annotation-driven />
+
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/stylesheets/" mapping="/stylesheets/**" />
+	<mvc:resources location="/javascripts/" mapping="/javascripts/**" />
+	
+	<!-- view 즉, jsp 에 접근할 때 어떤식으로 접근할 것인가? -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
+</beans>
