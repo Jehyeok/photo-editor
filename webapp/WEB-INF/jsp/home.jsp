@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,7 +10,7 @@
 <body>
 	<div id="bodyWrapper">
 		<div id="contentWrapper">
-			<canvas id="contentCanvas"></canvas>
+			<canvas id="contentCanvas" width="1000px" height="800px"></canvas>
 		</div>
 		<div id="rightSidebarWrapper">
 			<div id="fileUploadDiv">
@@ -49,7 +49,7 @@
 			var img = new Image();
 			img.src = URLComponent;
 			img.onload = function() {
-				ctx.drawImage(img, 0, 0, 50, 50);
+				ctx.drawImage(img, 200, 200, 300, 300);
 			};
 		}
 	}, false);
