@@ -10,7 +10,6 @@
 <body>
 	<div id="bodyWrapper">
 		<div id="contentWrapper">
-			<canvas id="contentCanvas" width="1000px" height="800px"></canvas>
 		</div>
 		<div id="rightSidebarWrapper">
 			<div id="fileUploadDiv">
@@ -19,13 +18,22 @@
 		</div>
 	</div>
 </body>
-<script type="text/html" id="imageBoxTemplate">
+<script type="text/html" id="imageInSidebarTemplate">
 <div class="imageBox" style="background-image:url(<\%= backgroundURL %>);">
 </div>
 </script>
+<script type="text/html" id="imageInContentTemplate">
+<div style="
+			background-image:url(<\%= backgroundURL %>);
+			background-size:cover;
+			width: <\%= width %>;
+			height: <\%= height %>;
+			">
+</div>	
+</script>
 <script src="/javascripts/underscore-min.js"></script>
 <script>
-	var ctx = document.getElementById('contentCanvas').getContext('2d');
+	var contentWrapper = document.getElementById('contentWrapper');
 	var rightSidebar = document.getElementById('rightSidebarWrapper');
 	var fileInput = document.querySelector('#fileUploadDiv input[type="file"]');
 	var reader = new FileReader();
@@ -36,9 +44,9 @@
 		reader.readAsDataURL(this.files[0]);
 		
 		reader.onloadend = function() {
-			var imageBoxTemplate = _.template(document.getElementById('imageBoxTemplate').innerHTML);
-			var imageBox = imageBoxTemplate({backgroundURL: this.result});
-			rightSidebar.insertAdjacentHTML('afterbegin', imageBox);			
+			var imageInSidebarTemplate = _.template(document.getElementById('imageInSidebarTemplate').innerHTML);
+			var image = imageInSidebarTemplate({backgroundURL: this.result});
+			rightSidebar.insertAdjacentHTML('afterbegin', image);		
 		}
 	}, false);
 	
@@ -48,8 +56,16 @@
 			var URLComponent = imageURL.slice(4, imageURL.length - 1);
 			var img = new Image();
 			img.src = URLComponent;
+			
 			img.onload = function() {
-				ctx.drawImage(img, 200, 200, 300, 300);
+				var ratio = this.height / this.width;
+				var imageInContentTemplate = _.template(document.getElementById('imageInContentTemplate').innerHTML);
+				var image = imageInContentTemplate({
+					backgroundURL: URLComponent,
+					width: 300 + 'px',
+					height: 300 * ratio + 'px'
+					});
+				contentWrapper.insertAdjacentHTML('beforeend', image);
 			};
 		}
 	}, false);
