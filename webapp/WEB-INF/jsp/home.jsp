@@ -10,6 +10,9 @@
 <body>
 	<div id="bodyWrapper">
 		<div id="contentWrapper">
+			<div id="content" class="content">
+			
+			</div>
 		</div>
 		<div id="rightSidebarWrapper">
 			<div id="fileUploadDiv">
@@ -19,21 +22,27 @@
 	</div>
 </body>
 <script type="text/html" id="imageInSidebarTemplate">
-<div class="imageBox" style="background-image:url(<\%= backgroundURL %>);">
+<div class="imageBox" draggable="true"
+	style="
+		background-image: url(<\%= backgroundURL %>);
+">
 </div>
 </script>
 <script type="text/html" id="imageInContentTemplate">
-<div style="
-			background-image:url(<\%= backgroundURL %>);
-			background-size:cover;
-			width: <\%= width %>;
-			height: <\%= height %>;
-			">
+<div draggable="true" style="
+	background-image: <\%= backgroundURL %>;
+	background-size: cover;
+	position: absolute;
+	width: <\%= width %>;
+	height: <\%= height %>;
+	left: <\%= left %>;
+	top: <\%= top %>;
+">
 </div>	
 </script>
 <script src="/javascripts/underscore-min.js"></script>
 <script>
-	var contentWrapper = document.getElementById('contentWrapper');
+	var content = document.getElementById('content');
 	var rightSidebar = document.getElementById('rightSidebarWrapper');
 	var fileInput = document.querySelector('#fileUploadDiv input[type="file"]');
 	var reader = new FileReader();
@@ -50,23 +59,67 @@
 		}
 	}, false);
 	
-	rightSidebar.addEventListener('click', function(e) {
+	var selectedDiv;
+	
+	var imageBox;
+	
+	rightSidebar.addEventListener('dragstart', function(e) {
+		console.log('dragstart');
+		
+		selectedDiv = e.target;
 		if (e.target.tagName === 'DIV') {
-			var imageURL = e.target.style['background-image'];
+			var imageURL = selectedDiv.style['background-image'];
 			var URLComponent = imageURL.slice(4, imageURL.length - 1);
-			var img = new Image();
-			img.src = URLComponent;
+			e.dataTransfer.setData('imageURL', imageURL);			
+		}
+		imageBox = e.target;
+		e.dataTransfer.setData('initOffsetX', e.offsetX);
+		e.dataTransfer.setData('initOffsetY', e.offsetY);
+	}, false);
+	
+	content.addEventListener('dragstart', function(e) {
+		console.log('dragstart');
+		
+		selectedDiv = e.target;
+		if (e.target.tagName === 'DIV') {
+			var imageURL = selectedDiv.style['background-image'];
+			var URLComponent = imageURL.slice(4, imageURL.length - 1);
+			e.dataTransfer.setData('imageURL', imageURL);			
+		}
+		imageBox = e.target;
+		e.dataTransfer.setData('initOffsetX', e.offsetX);
+		e.dataTransfer.setData('initOffsetY', e.offsetY);
+	}, false);
+	
+	rightSidebar.addEventListener('dragend', function(e) {
+		console.log('dragend');
+	}, false);
+	
+	content.addEventListener('dragover', function(e) {
+		console.log('dragover');
+		e.preventDefault();
+	}, false);
+	
+	content.addEventListener('drop', function(e) {
+		var target = e.target;
+		var imageURL = e.dataTransfer.getData('imageURL');
+		
+		if (target.className === 'content') {
+			var left = e.offsetX - e.dataTransfer.getData('initOffsetX') + 'px';
+			var top = e.offsetY - e.dataTransfer.getData('initOffsetY') + 'px';
 			
-			img.onload = function() {
-				var ratio = this.height / this.width;
-				var imageInContentTemplate = _.template(document.getElementById('imageInContentTemplate').innerHTML);
-				var image = imageInContentTemplate({
-					backgroundURL: URLComponent,
-					width: 300 + 'px',
-					height: 300 * ratio + 'px'
-					});
-				contentWrapper.insertAdjacentHTML('beforeend', image);
-			};
+			var imageInContentTemplate = _.template(document.getElementById('imageInContentTemplate').innerHTML);
+			var image = imageInContentTemplate({
+				backgroundURL: imageURL,
+				/* width: 300 + 'px',
+				height: 300 * ratio + 'px' */
+				width: '180px',
+				height: '180px',
+				left: left,
+				top: top
+				});
+			debugger;
+			content.insertAdjacentHTML('beforeend', image);
 		}
 	}, false);
 </script>
