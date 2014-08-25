@@ -47,24 +47,33 @@ var ContentMover = {
 			this.content.addEventListener('dragover', function(e) {
 				e.preventDefault();
 			}, false);
+
 			this.content.addEventListener('drop', function(e) {
-				if (e.target.className === 'content') {
+				console.log('drop');
+				if (e.currentTarget.className === 'content') {
 					var imageURL = e.dataTransfer.getData('imageURL');
-					var left = e.offsetX - e.dataTransfer.getData('offsetXInImageBox') + 'px';
-					var top = e.offsetY - e.dataTransfer.getData('offsetYInImageBox') + 'px';
 					var isMove = ('true' === e.dataTransfer.getData('isMove'));
 					
+					var left = e.offsetX - e.dataTransfer.getData('offsetXInImageBox');
+					var top = e.offsetY - e.dataTransfer.getData('offsetYInImageBox');
+					
 					if (isMove) {
-						this.selectedImage.style.left = left;
-						this.selectedImage.style.top = top;
+						if (e.target.className !== 'content') {
+							var preLeft = parseInt(this.selectedImage.style.left, 10);
+							var preTop = parseInt(this.selectedImage.style.top, 10);
+							left = preLeft + (e.offsetX - e.dataTransfer.getData('offsetXInImageBox'));
+							top = preTop + (e.offsetY - e.dataTransfer.getData('offsetYInImageBox'));
+						}
+						this.selectedImage.style.left = left + 'px';
+						this.selectedImage.style.top = top + 'px';
 					} else{
 						var imageInContentTemplate = _.template(document.getElementById('imageInContentTemplate').innerHTML);
 						var image = imageInContentTemplate({
 							backgroundURL : imageURL,
 							width : '180px',
 							height : '180px',
-							left : left,
-							top : top
+							left : left + 'px',
+							top : top + 'px'
 						});
 						this.content.insertAdjacentHTML('beforeend', image);
 					}
