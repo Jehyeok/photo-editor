@@ -21,7 +21,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>hyogudotcom</finalName>
+		<finalName>photo-editor</finalName>
 
 		<plugins>
 			<plugin>

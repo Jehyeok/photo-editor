@@ -3,18 +3,25 @@ var ContentUploader = {
 		rightSidebar: document.getElementById('rightSidebarWrapper'),
 		fileInput: document.querySelector('#fileUploadDiv input[type="file"]'),
 		reader: new FileReader(),
+		curReadIdx: 0,
 		
 		upload: function() {
 			var result;
 			
-			this.reader.readAsDataURL(this.fileInput.files[0]);
 			this.reader.onloadend = function() {
 				var imageInSidebarTemplate = _.template(document.getElementById('imageInSidebarTemplate').innerHTML);
 				var image = imageInSidebarTemplate({
 					backgroundURL : this.reader.result
 				});
 				this.rightSidebar.insertAdjacentHTML('afterbegin', image);
+				
+				if (this.curReadIdx + 1 < this.fileInput.files.length) {
+					this.curReadIdx++;
+					this.reader.readAsDataURL(this.fileInput.files[this.curReadIdx]);
+				}
 			}.bind(this);
+			
+			this.reader.readAsDataURL(this.fileInput.files[this.curReadIdx]);
 		},
 		init: function() {
 			this.fileInput.addEventListener('change',this.upload.bind(this), false);

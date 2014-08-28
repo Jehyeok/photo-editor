@@ -16,7 +16,7 @@
 		</div>
 		<div id="rightSidebarWrapper">
 			<div id="fileUploadDiv">
-				<input type="file" style="width: 100%; height: 100%;"></input>
+				<input type="file" multiple="multiple" style="width: 100%; height: 100%;"></input>
 			</div>
 		</div>
 	</div>
