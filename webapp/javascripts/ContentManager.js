@@ -3,23 +3,31 @@ var ContentUploader = {
 		rightSidebar: document.getElementById('rightSidebarWrapper'),
 		fileInput: document.querySelector('#fileUploadDiv input[type="file"]'),
 		reader: new FileReader(),
+		onLoadingElement: null,
 		curReadIdx: 0,
 		
 		upload: function() {
 			var result;
 			
-			this.reader.onloadend = function() {
+			this.reader.onprogress = function(e) {
+				this.onLoadingElement.innerText = e.loaded / e.total;
+			}.bind(this);
+			
+			this.reader.onloadstart = function() {
 				var imageInSidebarTemplate = _.template(document.getElementById('imageInSidebarTemplate').innerHTML);
-				var image = imageInSidebarTemplate({
-					backgroundURL : this.reader.result
-				});
+				var image = imageInSidebarTemplate();
 				this.rightSidebar.insertAdjacentHTML('afterbegin', image);
-				
+				this.onLoadingElement = this.rightSidebar.firstElementChild;
+			}.bind(this);
+			
+			this.reader.onloadend = function() {
+				this.rightSidebar.firstElementChild.style.backgroundImage = 'url(' + this.reader.result + ')';
 				if (this.curReadIdx + 1 < this.fileInput.files.length) {
 					this.curReadIdx++;
 					this.reader.readAsDataURL(this.fileInput.files[this.curReadIdx]);
 				}
 			}.bind(this);
+			
 			
 			this.reader.readAsDataURL(this.fileInput.files[this.curReadIdx]);
 		},

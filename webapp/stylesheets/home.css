@@ -29,6 +29,7 @@
 	border-style: solid;
 	border-radius: 20px;
 	border-color: #E2E2DB;
+	overflow:hidden;
 	float: right;
 }
 

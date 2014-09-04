@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,13 +18,13 @@
 				<input type="file" multiple="multiple" style="width: 100%; height: 100%;"></input>
 			</div>
 		</div>
+		<div id="layer"></div>
+		<div id="imageModal">
+		</div>
 	</div>
 </body>
 <script type="text/html" id="imageInSidebarTemplate">
-<div class="imageBox" draggable="true"
-	style="
-		background-image: url(<\%= backgroundURL %>);
-">
+<div class="imageBox" draggable="true">
 </div>
 </script>
 <script type="text/html" id="imageInContentTemplate">
@@ -42,4 +41,13 @@
 </script>
 <script src="/javascripts/underscore-min.js"></script>
 <script src="/javascripts/ContentManager.js"></script>
+<script src="/javascripts/html2canvas.js"></script>
+<script>
+	/* var content = document.getElementById('content');
+	html2canvas(content, {
+		onrendered: function(canvas) {
+			document.body.appendChild(canvas);
+		}
+	}); */
+</script>
 </html>
